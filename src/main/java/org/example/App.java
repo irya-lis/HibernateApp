@@ -24,15 +24,19 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 2);
-            //SQL
-            session.remove(person);
+            Person person = session.get(Person.class, 4);
+            Item item = session.get(Item.class, 1);
 
-            //Было рпавильное состояние Hibernate кэша
-            person.getItems().forEach(i -> i.setOwner(null));
+            // Корректная работа кэша
+            item.getOwner().getItems().remove(item);
+
+            //SQL
+            item.setOwner(person);
+
+            // Корректная работа кэша
+            person.getItems().add(item);
 
             session.getTransaction().commit();
-
 
 
         } finally {
