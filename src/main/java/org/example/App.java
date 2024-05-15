@@ -24,17 +24,12 @@ public class App {
         try {
             session.beginTransaction();
 
-           Person person = session.get(Person.class, 3);
+            Person person = session.get(Person.class, 2);
+            //SQL
+            session.remove(person);
 
-           List<Item> items = person.getItems();
-
-           //SQL
-           for(Item item: items) {
-               session.remove(item);
-           }
-
-           // Не порождает SQL, но еобходимо для того, чтобы в кэше все было верно
-           person.getItems().clear();
+            //Было рпавильное состояние Hibernate кэша
+            person.getItems().forEach(i -> i.setOwner(null));
 
             session.getTransaction().commit();
 
