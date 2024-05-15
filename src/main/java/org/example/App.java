@@ -24,20 +24,15 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = session.get(Person.class, 4);
-            Item item = session.get(Item.class, 1);
+            Person person = new Person("Test cascading", 30);
 
-            // Корректная работа кэша
-            item.getOwner().getItems().remove(item);
+            person.addItem(new Item("Item1"));
+            person.addItem(new Item("Item2"));
+            person.addItem(new Item("Item3"));
 
-            //SQL
-            item.setOwner(person);
 
-            // Корректная работа кэша
-            person.getItems().add(item);
-
+            session.save(person);
             session.getTransaction().commit();
-
 
         } finally {
             sessionFactory.close();
