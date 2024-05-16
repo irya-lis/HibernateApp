@@ -14,16 +14,16 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Column(name = "name")
     private String name;
 
     @Column(name = "age")
     private int age;
 
-    @OneToMany(mappedBy = "owner")
+
+    @OneToOne(mappedBy = "person")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private List<Item> items;
+    private Passport passport;
 
     public Person() {
     }
@@ -57,21 +57,14 @@ public class Person {
         this.age = age;
     }
 
-    public List<Item> getItems() {
-        return items;
+
+    public Passport getPassport() {
+        return passport;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    public void addItem(Item item) {
-        if(this.items == null)
-            this.items = new ArrayList<>();
-
-            this.items.add(item);
-            item.setOwner(this);
-
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+        passport.setPerson(this);
     }
 
     @Override
