@@ -19,13 +19,10 @@ public class App {
         try {
             session.beginTransaction();
 
-            Person person = new Person("Alex", 22);
+           Person person = session.get(Person.class, 1);
 
-            Passport passport = new Passport(122333);
+           person.getPassport().setPassportNumber(66666);
 
-            person.setPassport(passport);
-
-            session.save(person);
             session.getTransaction().commit();
 
         } finally {
