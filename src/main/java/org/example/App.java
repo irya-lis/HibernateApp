@@ -24,19 +24,9 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Movie movie = new Movie("Supernatural", 2005);
+            Movie movie = session.get(Movie.class, 1);
 
-            Actor actor1 = new Actor("Jensen Ackles", 32);
-            Actor actor2 = new Actor("Jared Padalecki", 30);
-
-            movie.setActors(new ArrayList<>(List.of(actor1, actor2)));
-
-            actor1.setMovies(new ArrayList<>(Collections.singletonList(movie)));
-            actor2.setMovies(new ArrayList<>(Collections.singletonList(movie)));
-
-            session.save(movie);
-            session.save(actor1);
-            session.save(actor2);
+            System.out.println(movie.getActors());
 
 
             session.getTransaction().commit();
