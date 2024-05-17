@@ -24,9 +24,14 @@ public class App {
             Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-            Movie movie = session.get(Movie.class, 1);
+           Movie movie = new Movie("My Bloody Valentine", 1998);
 
-            System.out.println(movie.getActors());
+           Actor actor = session.get(Actor.class, 1);
+
+           movie.setActors(new ArrayList<>(Collections.singletonList(actor)));
+           actor.getMovies().add(movie);
+
+           session.save(movie);
 
 
             session.getTransaction().commit();
