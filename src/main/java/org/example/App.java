@@ -19,22 +19,18 @@ public class App {
         Configuration configuration = new Configuration().addAnnotatedClass(Person.class).addAnnotatedClass(Item.class);
 
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
+
 
         try {
+            Session session = sessionFactory.getCurrentSession();
             session.beginTransaction();
 
-           Person person = session.get(Person.class, 3);
+            Person person = session.get(Person.class, 2);
+            System.out.println("Получили person");
 
-           List<Item> items = person.getItems();
+            System.out.println("Получим связные сущности Lazy");
+            System.out.println(person.getItems());
 
-           //SQL
-           for(Item item: items) {
-               session.remove(item);
-           }
-
-           // Не порождает SQL, но еобходимо для того, чтобы в кэше все было верно
-           person.getItems().clear();
 
             session.getTransaction().commit();
 
